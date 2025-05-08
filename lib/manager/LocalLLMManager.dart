@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:fllama/fllama.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktoken/flutter_tiktoken.dart';
-
+import 'package:flutter/foundation.dart';
 import 'LLMException.dart';
 import 'TextTokenSplitter.dart';
 
@@ -120,7 +120,10 @@ Transcription content:
         int requestId = await fllamaChat(
           request,
           (response, responseJson, done) {
-            if (kDebugMode) debugPrint("done:$done response:$response");
+            if (kDebugMode) {
+              debugPrint(
+                  "done:$done response string length:${response.length}");
+            }
             if (response.startsWith("Error:")) {
               if (kDebugMode) debugPrint("LLM callback error $response");
               completer.completeError(LLMException(response, -1));
