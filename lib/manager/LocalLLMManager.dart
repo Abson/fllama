@@ -113,16 +113,16 @@ Transcription content:
               return;
             }
             // ignore: avoid_print
-            debugPrint('[llama.cpp] $log');
+            if (kDebugMode) debugPrint('[llama.cpp] $log');
           },
         );
 
         int requestId = await fllamaChat(
           request,
           (response, responseJson, done) {
-            debugPrint("done:$done response:$response");
+            if (kDebugMode) debugPrint("done:$done response:$response");
             if (response.startsWith("Error:")) {
-              debugPrint("LLM callback error $response");
+              if (kDebugMode) debugPrint("LLM callback error $response");
               completer.completeError(LLMException(response, -1));
             }
             if (response.contains("<end_of_turn>")) {
