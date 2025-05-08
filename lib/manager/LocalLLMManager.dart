@@ -14,7 +14,11 @@ typedef LLMResponseListener = void Function(String content, bool done);
 class LocalLLMManager {
   int? _runningRequestId;
 
-  // DateTime? _inferenceStartTime;
+  static final LocalLLMManager _instance = LocalLLMManager._();
+
+  static LocalLLMManager get instance => _instance;
+
+  LocalLLMManager._();
 
   /// 运行推理并获取响应
   /// [modelPath] 模型文件路径
@@ -34,6 +38,7 @@ class LocalLLMManager {
     int contextSize = 2048,
     void Function(String log)? logge,
   }) async {
+    cancelInference();
     logge?.call("run model modelPath:$modelPath content_len:${content.length}");
     String allResult = "";
     try {
@@ -122,10 +127,12 @@ Transcription content:
           (response, responseJson, done) {
             if (kDebugMode) {
               debugPrint(
-                  "done:$done response string length:${response.length}");
+                  "[$runtimeType] done:$done response string length:${response.length}");
             }
             if (response.startsWith("Error:")) {
-              if (kDebugMode) debugPrint("LLM callback error $response");
+              if (kDebugMode) {
+                debugPrint("[$runtimeType] LLM callback error $response");
+              }
               completer.completeError(LLMException(response, -1));
             }
             if (response.contains("<end_of_turn>")) {
