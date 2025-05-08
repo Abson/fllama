@@ -32,11 +32,12 @@ class LocalLLMManager {
     double temperature = 0.1,
     // double topP = 0.9,
     int contextSize = 2048,
+    void Function(String log) logge = (log) {},
   }) async {
-    debugPrint("run model modelPath:$modelPath content_len:${content.length}");
+    logge("run model modelPath:$modelPath content_len:${content.length}");
     String allResult = "";
     try {
-      debugPrint("total tokens:${calcuateTokens(text: content)}");
+      logge("total tokens:${calcuateTokens(text: content)}");
       // 文章切片
       List<String> textChunks = TextTokenSplitter.splitTextByTokens(
         text: content,
@@ -45,7 +46,7 @@ class LocalLLMManager {
         minLastChunkSize: 400,
       );
 
-      debugPrint('text has been split into ${textChunks.length} 段');
+      logge('text has been split into ${textChunks.length} 段');
       for (int i = 0; i < textChunks.length; i++) {
         print(
           '${i + 1} chunks: ${TextTokenSplitter.calcuateTokens(text: textChunks[i])} tokens',
@@ -112,16 +113,16 @@ Transcription content:
               return;
             }
             // ignore: avoid_print
-            debugPrint('[llama.cpp] $log');
+            logge('[llama.cpp] $log');
           },
         );
 
         int requestId = await fllamaChat(
           request,
-              (response, responseJson, done) {
-            debugPrint("done:$done response:$response");
+          (response, responseJson, done) {
+            logge("done:$done response:$response");
             if (response.startsWith("Error:")) {
-              debugPrint("LLM callback error $response");
+              logge("LLM callback error $response");
               completer.completeError(LLMException(response, -1));
             }
             if (response.contains("<end_of_turn>")) {
@@ -144,10 +145,10 @@ Transcription content:
         cancelInference();
       }
     } catch (e) {
-      debugPrint("run inference error $e");
+      logge("run inference error $e");
       rethrow;
     }
-    debugPrint("finish llm");
+    logge("finish llm");
     listener(allResult, true);
     return allResult;
   }
