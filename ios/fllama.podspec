@@ -14,15 +14,15 @@ A new Flutter FFI plugin project.
   s.author           = { 'Your Company' => 'email@example.com' }
 
   # Combine all xcconfig settings to avoid overriding
-  s.pod_target_xcconfig = { 
-    'DEFINES_MODULE' => 'YES', 
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386',
     'USER_HEADER_SEARCH_PATHS' => [
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/ggml/include/*.h',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/ggml/include',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/include',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/src',
-      '$(PODS_TARGET_SRCROOT)/../llama.cpp/**/*.h', 
+      '$(PODS_TARGET_SRCROOT)/../llama.cpp/**/*.h',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/common/**/*.h',
       '$(PODS_TARGET_SRCROOT)/llama.cpp/ggml/include',
       '$(PODS_TARGET_SRCROOT)/llama.cpp/ggml/src',
@@ -38,7 +38,7 @@ A new Flutter FFI plugin project.
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/ggml/include/*.h',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/include',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/src',
-      '$(PODS_TARGET_SRCROOT)/../llama.cpp/**/*.h', 
+      '$(PODS_TARGET_SRCROOT)/../llama.cpp/**/*.h',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/common/**/*.h',
       '$(PODS_TARGET_SRCROOT)/llama.cpp/common',
       '$(PODS_TARGET_SRCROOT)/../llama.cpp/common',
@@ -46,9 +46,14 @@ A new Flutter FFI plugin project.
     # -w is to suppress warnings from llama.cpp, there's tons of them
     'OTHER_CFLAGS' => ['$(inherited)', '-O3', '-flto', '-fno-objc-arc', '-w', '-I$(PODS_TARGET_SRCROOT)/../llama.cpp/include', '-I$(PODS_TARGET_SRCROOT)/../llama.cpp/ggml/include', '-I$(PODS_TARGET_SRCROOT)/../llama.cpp/common', '-DGGML_LLAMAFILE=OFF', '-DGGML_USE_CPU'],
     'OTHER_CPLUSPLUSFLAGS' => ['$(inherited)', '-O3', '-flto', '-fno-objc-arc', '-w', '-std=c++17', '-fpermissive', '-I$(PODS_TARGET_SRCROOT)/../llama.cpp/include', '-I$(PODS_TARGET_SRCROOT)/../llama.cpp/ggml/include', '-I$(PODS_TARGET_SRCROOT)/../llama.cpp/common', '-DGGML_LLAMAFILE=OFF', '-DGGML_USE_CPU'],
-    'GCC_PREPROCESSOR_DEFINITIONS' => ['$(inherited)', 'GGML_USE_METAL=1'],
+    # 'GCC_PREPROCESSOR_DEFINITIONS' => ['$(inherited)', 'GGML_USE_METAL=1'],
+    'GCC_PREPROCESSOR_DEFINITIONS' => ['$(inherited)'],
   }
-  
+
+  s.user_target_xcconfig = {
+    'OTHER_LDFLAGS' => '-force_load $(BUILT_PRODUCTS_DIR)/fllama/libfllama.a'
+  }
+
   s.dependency 'Flutter'
   s.platform = :ios, '13.0'
   s.swift_version = '5.0'
@@ -58,7 +63,7 @@ A new Flutter FFI plugin project.
   # paths, so Classes contains a forwarder C file that relatively imports
   # `../src/*` so that the C sources can be shared among all target platforms.
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*', 
+  s.source_files = 'Classes/**/*',
                     'llama.cpp/src/*.cpp',
                     'llama.cpp/common/*.cpp',
                     'llama.cpp/ggml/src/*.cpp',
@@ -86,7 +91,7 @@ A new Flutter FFI plugin project.
                    'llama.cpp/common/sampling.cpp',
                    'llama.cpp/common/stb_image.h',
   s.frameworks = 'Foundation', 'Metal', 'MetalKit'
-  
+
   s.script_phases = [
     {
       :name => 'Build Metal Library',

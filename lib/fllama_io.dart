@@ -1,6 +1,3 @@
-export 'io/fllama_io_inference.dart';
-export 'io/fllama_io_tokenize.dart';
-
 import 'dart:ffi';
 import 'dart:io';
 
@@ -10,6 +7,9 @@ import 'package:fllama/io/fllama_bindings_generated.dart';
 import 'package:fllama/io/fllama_io_helpers.dart';
 import 'package:fllama/misc/openai.dart';
 
+export 'io/fllama_io_inference.dart';
+export 'io/fllama_io_tokenize.dart';
+
 typedef FllamaInferenceCallback = void Function(String response, String openaiResponseJsonString, bool done);
 typedef FllamaMlcLoadCallback = void Function(
     double downloadProgress, double loadProgress);
@@ -18,7 +18,8 @@ typedef FllamaMlcLoadCallback = void Function(
 final DynamicLibrary fllamaDylib = () {
   const String fllamaLibName = 'fllama';
   if (Platform.isMacOS || Platform.isIOS) {
-    return DynamicLibrary.open('$fllamaLibName.framework/$fllamaLibName');
+    // return DynamicLibrary.open('$fllamaLibName.framework/$fllamaLibName');
+    return DynamicLibrary.process();
   }
   if (Platform.isAndroid || Platform.isLinux) {
     return DynamicLibrary.open('lib$fllamaLibName.so');
