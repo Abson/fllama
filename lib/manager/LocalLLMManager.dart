@@ -46,7 +46,7 @@ class LocalLLMManager {
       // 文章切片
       List<String> textChunks = TextTokenSplitter.splitTextByTokens(
         text: content,
-        maxTokensPerChunk: 1536,
+        maxTokensPerChunk: 2000,
         modelName: 'gpt-4', // 可选，默认就是gpt-4
         minLastChunkSize: 400,
       );
