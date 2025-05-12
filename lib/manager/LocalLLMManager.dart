@@ -48,7 +48,7 @@ class LocalLLMManager {
         text: content,
         maxTokensPerChunk: 2000,
         modelName: 'gpt-4', // 可选，默认就是gpt-4
-        minLastChunkSize: 400,
+        minLastChunkSize: 200,
       );
 
       logge?.call('text has been split into ${textChunks.length} 段');
