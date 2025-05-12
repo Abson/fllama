@@ -74,7 +74,7 @@ Please help me analyze and summarize the following transcription content, follow
 
 ## Overall Requirements
 - Provide a concise overview (no more than 3 sentences) that captures the core theme of the entire conversation/content
-- Extract 2-3 key information points, ranked by importance
+- Extract 1-2 key information points, ranked by importance
 - The summary should be concise, with a total word count of no more than 300 words
 - you not explain anything
 
@@ -90,7 +90,7 @@ Please help me analyze and summarize the following transcription content, follow
 
 ## Summary
 ...
-[A short summary integrating the main ideas and insights]
+[80-120 word integration of main ideas]
 ```
 Please omit unimportant details, repetitive content, and casual conversation, focusing on extracting information of substantial value.
 
