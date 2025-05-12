@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tiktoken/flutter_tiktoken.dart';
 import 'package:flutter/foundation.dart';
 import 'LLMException.dart';
+import 'SummaryExtractor.dart';
 import 'TextTokenSplitter.dart';
 
 /// 本地LLM响应监听器接口
@@ -74,24 +75,15 @@ Please help me analyze and summarize the following transcription content, follow
 
 ## Overall Requirements
 - Provide a concise overview (no more than 3 sentences) that captures the core theme of the entire conversation/content
-- Extract 1-2 key information points, ranked by importance
-- The summary should be concise, with a total word count of no more than 300 words
+- The summary should be concise, with a total word count of no more than 100 words
 - you not explain anything
 
 ## Response Format
 ```
-## Core Content
-[Provide a1-2 sentence general overview]
-
-## Key Information Points
-1. [Most important information point]
-2. [Second most important information point]
-...
-
 ## Summary
-...
-[80-120 word integration of main ideas]
+[50~100 word integration of main ideas]
 ```
+
 Please omit unimportant details, repetitive content, and casual conversation, focusing on extracting information of substantial value.
 
 Transcription content:
@@ -158,7 +150,15 @@ Transcription content:
       rethrow;
     }
     logge?.call("finish llm");
-    listener(allResult, true);
+
+    List<String> summaries =
+        SummaryExtractor.extractSummaries(allResult); // 打印结果
+    StringBuffer result = StringBuffer();
+    result.writeln('## Summary');
+    for (int i = 0; i < summaries.length; i++) {
+      result.writeln('    ${i + 1}、${summaries[i]}');
+    }
+    listener(result.toString(), true);
     return allResult;
   }
 
