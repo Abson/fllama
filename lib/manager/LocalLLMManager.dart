@@ -52,6 +52,7 @@ class LocalLLMManager {
         minLastChunkSize: 300,
       );
 
+
       logge?.call('text has been split into ${textChunks.length} 段');
       for (int i = 0; i < textChunks.length; i++) {
         logge?.call(
