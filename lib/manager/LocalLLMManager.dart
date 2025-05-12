@@ -33,7 +33,7 @@ class LocalLLMManager {
     required String content,
     required LLMResponseListener listener,
     int maxTokens = 1000,
-    double temperature = 0.1,
+    double temperature = 0.0,
     // double topP = 0.9,
     int contextSize = 2048,
     void Function(String log)? logge,
@@ -76,6 +76,7 @@ Please help me analyze and summarize the following transcription content, follow
 - Provide a concise overview (no more than 3 sentences) that captures the core theme of the entire conversation/content
 - Extract 2-3 key information points, ranked by importance
 - The summary should be concise, with a total word count of no more than 300 words
+- you not explain anything
 
 ## Response Format
 ```
@@ -89,8 +90,6 @@ Please help me analyze and summarize the following transcription content, follow
 
 ## Summary
 ...
-
-## Brief Summary
 [A short summary integrating the main ideas and insights]
 ```
 Please omit unimportant details, repetitive content, and casual conversation, focusing on extracting information of substantial value.
