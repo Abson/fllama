@@ -160,6 +160,9 @@ Transcription content:
         result.writeln('- ${summaries[i]}');
       }
     }
+
+    result.writeln('[测试部分输出解析前全文内容]');
+    result.writeln('allResult');
     String summariesResult = result.toString().replaceAll(RegExp(r'```'), "");
     listener(summariesResult, true);
     return summariesResult;
