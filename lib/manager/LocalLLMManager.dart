@@ -70,23 +70,6 @@ class LocalLLMManager {
         final request = OpenAiRequest(
           maxTokens: maxTokens.round(),
           messages: [
-//             Message(Role.user, """
-// Please help me analyze and summarize the following transcription content, following these requirements:
-//
-// ## Overall Requirements
-// - Provide a concise overview (no more than 3 sentences) that captures the core theme of the entire conversation/content
-// - The summary should be concise, with a total word count of no more than 60 words
-// - Please summarize the following transcription content in 20-60 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
-//
-// ## Response Format
-// ```
-// ## Summary
-// [20~60 word integration of main ideas]
-// ```
-//
-// Transcription content:
-// [$chunk]
-//             """)
             Message(Role.user, """
 Please summarize the following transcription content in 20-60 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
 
@@ -174,7 +157,106 @@ xxxxxx
     result.writeln(allResult);
     String summariesResult = result.toString().replaceAll(RegExp(r'```'), "");
     listener(summariesResult, true);
-    return summariesResult;
+    if (calcuateTokens(text: summariesResult) > 2100) {
+      return content;
+    }
+    return trySecondarySummary(summariesResult, modelPath);
+  }
+
+  /**
+   * 第二次总结
+   */
+  Future<String> trySecondarySummary(content, modelPath) async {
+    final completer = Completer();
+    String summaryResult = "";
+    final request = OpenAiRequest(
+      maxTokens: 2048,
+      messages: [
+        Message(Role.user, """
+# Text Summary Prompt
+
+Please provide a comprehensive summary of the provided text, structured in the following format:
+
+```
+# Summary
+
+**Topic**: [Summarize the core subject of the text in 1-2 sentences]
+
+**Key Points**:
+- [List first key point]
+- [List second key point]
+- [Continue listing all important key points, ensuring each is concise]
+- [Focus on significant events, turning points, challenges, and achievements]
+
+**Conclusion**:
+- [Provide 1-2 paragraphs of concluding thoughts on the overall content, emphasizing core lessons or insights]
+```
+
+When analyzing the text, please:
+1. Identify and distill the most important information
+2. Arrange key points in chronological order or by importance
+3. Reflect deeper meanings or lessons in the conclusion
+4. Remain objective and ensure the summary accurately represents the original content    
+
+# Content
+[$content]
+            """)
+      ],
+      numGpuLayers: 99,
+      /* this seems to have no adverse effects in environments w/o GPU support, ex. Android and web */
+      modelPath: modelPath,
+      // mmprojPath: _mmprojPath,
+      frequencyPenalty: 0.0,
+      // Don't use below 1.1, LLMs without a repeat penalty
+      // will repeat the same token.
+      presencePenalty: 1.1,
+      topP: 1.0,
+      // contextSize: 20000,
+      // Don't use 0.0, some models will repeat
+      // the same token.
+      temperature: 0.0,
+      contextSize: 2048,
+      logger: (log) {
+        if (log.contains('ggml_')) {
+          return;
+        }
+        // ignore: avoid_print
+        if (kDebugMode) debugPrint('[llama.cpp] $log');
+      },
+    );
+
+    int requestId = await fllamaChat(
+      request,
+      (response, responseJson, done) {
+        if (kDebugMode) {
+          debugPrint(
+              "[$runtimeType] done:$done response string length:${response.length}");
+        }
+        print(
+            "[$runtimeType] done:$done response string length:${response.length}");
+        if (response.startsWith("Error:")) {
+          if (kDebugMode) {
+            debugPrint("[$runtimeType] LLM callback error $response");
+          }
+          completer.completeError(LLMException(response, -1));
+        }
+        if (response.contains("<end_of_turn>")) {
+          done = true;
+        }
+        if (done) {
+          completer.complete();
+        } else {
+          summaryResult = response;
+          print("赋值 $response\n$summaryResult");
+        }
+      },
+    );
+
+    _runningRequestId = requestId;
+    // 等待当前分片处理完成
+    await completer.future;
+    print("secondary summary result:$summaryResult");
+    return summaryResult;
   }
 
   /// 取消当前正在运行的推理请求
@@ -191,6 +273,7 @@ xxxxxx
   }) {
     final encoding = encodingForModel(modelName);
     final numTokens = encoding.encode(text).length;
+    print("calcuateTokens result:$numTokens");
     return numTokens;
   }
 }

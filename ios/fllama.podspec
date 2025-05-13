@@ -50,9 +50,9 @@ A new Flutter FFI plugin project.
     'GCC_PREPROCESSOR_DEFINITIONS' => ['$(inherited)'],
   }
 
-  s.user_target_xcconfig = {
-    'OTHER_LDFLAGS' => '-force_load $(BUILT_PRODUCTS_DIR)/fllama/libfllama.a'
-  }
+#   s.user_target_xcconfig = {
+#     'OTHER_LDFLAGS' => '-force_load $(BUILT_PRODUCTS_DIR)/fllama/libfllama.a'
+#   }
 
   s.dependency 'Flutter'
   s.platform = :ios, '13.0'
