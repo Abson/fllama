@@ -7,8 +7,12 @@ class SummaryExtractor {
     List<String> summaries = [];
 
     // 使用正则表达式匹配## Summary及其后面的内容，直到下一个##开头的部分
-    RegExp regExp = RegExp(r'## Summary\s+(.*?)(?=\s*##|\s*$)',
-        dotAll: true); // dotAll允许.匹配换行符// 找出所有匹配项
+    // RegExp regExp = RegExp(r'## Summary\s+(.*?)(?=\s*##|\s*$)',
+    //     dotAll: true); // dotAll允许.匹配换行符// 找出所有匹配项
+    final RegExp regExp = RegExp(
+      r'## Summary(?!\s+Brief)\s+\n*([^\n]+(?:\n[^\n]+)*?)(?=\n\s*\n|\s*##|\s*$)',
+      dotAll: true,
+    );
     Iterable<Match> matches = regExp.allMatches(text);
 
     // 将每个匹配项添加到结果列表中
