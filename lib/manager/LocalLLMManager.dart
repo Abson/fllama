@@ -158,8 +158,9 @@ Transcription content:
     for (int i = 0; i < summaries.length; i++) {
       result.writeln('    ${i + 1}、${summaries[i]}');
     }
-    listener(result.toString(), true);
-    return result.toString();
+    String summariesResult = result.toString().replaceAll(RegExp(r'```'), "");
+    listener(summariesResult, true);
+    return summariesResult;
   }
 
   /// 取消当前正在运行的推理请求
