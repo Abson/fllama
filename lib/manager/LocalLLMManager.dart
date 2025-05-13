@@ -52,7 +52,6 @@ class LocalLLMManager {
         minLastChunkSize: 300,
       );
 
-
       logge?.call('text has been split into ${textChunks.length} 段');
       for (int i = 0; i < textChunks.length; i++) {
         logge?.call(
@@ -160,7 +159,7 @@ Transcription content:
       result.writeln('    ${i + 1}、${summaries[i]}');
     }
     listener(result.toString(), true);
-    return allResult;
+    return result.toString();
   }
 
   /// 取消当前正在运行的推理请求
