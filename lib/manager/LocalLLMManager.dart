@@ -156,7 +156,9 @@ Transcription content:
     StringBuffer result = StringBuffer();
     result.writeln('## Summary');
     for (int i = 0; i < summaries.length; i++) {
-      result.writeln('- ${summaries[i]}');
+      if (summaries[i].isNotEmpty) {
+        result.writeln('- ${summaries[i]}');
+      }
     }
     String summariesResult = result.toString().replaceAll(RegExp(r'```'), "");
     listener(summariesResult, true);
