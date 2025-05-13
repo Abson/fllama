@@ -75,7 +75,7 @@ Please help me analyze and summarize the following transcription content, follow
 
 ## Overall Requirements
 - Provide a concise overview (no more than 3 sentences) that captures the core theme of the entire conversation/content
-- The summary should be concise, with a total word count of no more than 100 words
+- The summary should be concise, with a total word count of no more than 60 words
 - you not explain anything
 
 ## Response Format
