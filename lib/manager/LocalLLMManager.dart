@@ -81,7 +81,7 @@ Please help me analyze and summarize the following transcription content, follow
 ## Response Format
 ```
 ## Summary
-[30~80 word integration of main ideas]
+[20~60 word integration of main ideas]
 ```
 
 Please omit unimportant details, repetitive content, and casual conversation, focusing on extracting information of substantial value.
