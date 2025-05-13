@@ -70,24 +70,33 @@ class LocalLLMManager {
         final request = OpenAiRequest(
           maxTokens: maxTokens.round(),
           messages: [
+//             Message(Role.user, """
+// Please help me analyze and summarize the following transcription content, following these requirements:
+//
+// ## Overall Requirements
+// - Provide a concise overview (no more than 3 sentences) that captures the core theme of the entire conversation/content
+// - The summary should be concise, with a total word count of no more than 60 words
+// - Please summarize the following transcription content in 20-60 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
+//
+// ## Response Format
+// ```
+// ## Summary
+// [20~60 word integration of main ideas]
+// ```
+//
+// Transcription content:
+// [$chunk]
+//             """)
             Message(Role.user, """
-Please help me analyze and summarize the following transcription content, following these requirements:
-
-## Overall Requirements
-- Provide a concise overview (no more than 3 sentences) that captures the core theme of the entire conversation/content
-- The summary should be concise, with a total word count of no more than 60 words
-- you not explain anything
-
-## Response Format
-```
-## Summary
-[20~60 word integration of main ideas]
-```
-
-Please omit unimportant details, repetitive content, and casual conversation, focusing on extracting information of substantial value.
+Please summarize the following transcription content in 20-60 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
 
 Transcription content:
 [$chunk]
+
+This will give you just the requested format:
+
+## Summary
+xxxxxx            
             """)
           ],
           numGpuLayers: 99,
@@ -161,8 +170,8 @@ Transcription content:
       }
     }
 
-    result.writeln('[测试部分输出解析前全文内容]');
-    result.writeln('allResult');
+    result.writeln('\n\n\n[测试部分输出解析前全文内容]\n');
+    result.writeln(allResult);
     String summariesResult = result.toString().replaceAll(RegExp(r'```'), "");
     listener(summariesResult, true);
     return summariesResult;
