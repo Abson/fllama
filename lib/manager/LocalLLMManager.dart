@@ -81,7 +81,7 @@ Please help me analyze and summarize the following transcription content, follow
 ## Response Format
 ```
 ## Summary
-[50~100 word integration of main ideas]
+[30~80 word integration of main ideas]
 ```
 
 Please omit unimportant details, repetitive content, and casual conversation, focusing on extracting information of substantial value.
@@ -156,7 +156,7 @@ Transcription content:
     StringBuffer result = StringBuffer();
     result.writeln('## Summary');
     for (int i = 0; i < summaries.length; i++) {
-      result.writeln('    ${i + 1}、${summaries[i]}');
+      result.writeln('- ${summaries[i]}');
     }
     String summariesResult = result.toString().replaceAll(RegExp(r'```'), "");
     listener(summariesResult, true);
