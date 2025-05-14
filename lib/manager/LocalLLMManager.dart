@@ -71,7 +71,7 @@ class LocalLLMManager {
           maxTokens: maxTokens.round(),
           messages: [
             Message(Role.user, """
-Please summarize the following transcription content in 20-50 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
+Please summarize the following transcription content in 30-90 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
 
 Transcription content:
 [$chunk]
@@ -159,7 +159,7 @@ xxxxxx
       return content;
     }
     return trySecondarySummary(
-        summariesResult
+        allResult
             // 避免 AI 重复总结
             .replaceAll(RegExp(r'## summary'), "")
             .replaceAll(RegExp(r'## Summary'), ""),
@@ -213,18 +213,17 @@ Please provide a brief summary of the given text, using this streamlined format:
 **Topic**: [Summarize the core subject in one sentence]
 
 **Key Points**:
-- [First key point, maximum 15 words]
-- [Second key point, maximum 15 words]
+- [First key point, maximum 30 words]
+- [Second key point, maximum 30 words]
 - [List up to 5 most important points only]
 
-**Conclusion**: [Summarize the core insights in one brief paragraph (maximum 50 words)]
+**Conclusion**: [Summarize the core insights in one brief paragraph (maximum 60 words)]
 ```
 
 Summary requirements:
-1. Keep the entire summary under 200 words
-2. Extract only the most essential, valuable information
-3. Ensure brevity and precision, avoid redundancy
-4. Remain objective and accurately reflect the original content
+1. Extract only the most essential, valuable information
+2. Ensure brevity and precision, avoid redundancy
+3. Remain objective and accurately reflect the original content
 
 
 # Content
