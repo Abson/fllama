@@ -172,34 +172,56 @@ xxxxxx
     final request = OpenAiRequest(
       maxTokens: 2048,
       messages: [
+//         Message(Role.user, """
+// # Text Summary Prompt
+//
+// Please provide a comprehensive summary of the provided text, structured in the following format:
+//
+// ```
+// # Summary
+//
+// **Topic**: [Summarize the core subject of the text in 1-2 sentences]
+//
+// **Key Points**:
+// - [List first key point]
+// - [List second key point]
+// - [Continue listing all important key points, ensuring each is concise]
+// - [Focus on significant events, turning points, challenges, and achievements]
+//
+// **Conclusion**:
+// - [Provide 1-2 paragraphs of concluding thoughts on the overall content, emphasizing core lessons or insights]
+// ```
+//
+// When analyzing the text, please:
+// 1. Identify and distill the most important information
+// 2. Arrange key points in chronological order or by importance
+// 3. Reflect deeper meanings or lessons in the conclusion
+// 4. Remain objective and ensure the summary accurately represents the original content
+//
+// # Content
+// [$content]
+//             """)
         Message(Role.user, """
-# Text Summary Prompt
-
-Please provide a comprehensive summary of the provided text, structured in the following format:
+Please provide a brief summary of the given text, using this streamlined format:
 
 ```
 # Summary
 
-**Topic**: [Summarize the core subject of the text in 1-2 sentences]
+**Topic**: [Summarize the core subject in one sentence]
 
 **Key Points**:
-- [List first key point]
-- [List second key point]
-- [Continue listing all important key points, ensuring each is concise]
-- [Focus on significant events, turning points, challenges, and achievements]
+- [First key point, maximum 15 words]
+- [Second key point, maximum 15 words]
+- [List up to 5 most important points only]
 
-**Conclusion**:
-- [Provide 1-2 paragraphs of concluding thoughts on the overall content, emphasizing core lessons or insights]
+**Conclusion**: [Summarize the core insights in one brief paragraph (maximum 50 words)]
 ```
 
-When analyzing the text, please:
-1. Identify and distill the most important information
-2. Arrange key points in chronological order or by importance
-3. Reflect deeper meanings or lessons in the conclusion
-4. Remain objective and ensure the summary accurately represents the original content    
-
-# Content
-[$content]
+Summary requirements:
+1. Keep the entire summary under 200 words
+2. Extract only the most essential, valuable information
+3. Ensure brevity and precision, avoid redundancy
+4. Remain objective and accurately reflect the original content
             """)
       ],
       numGpuLayers: 99,
