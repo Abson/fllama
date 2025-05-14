@@ -146,21 +146,24 @@ xxxxxx
     List<String> summaries =
         SummaryExtractor.extractSummaries(allResult); // 打印结果
     StringBuffer result = StringBuffer();
-    result.writeln('## Summary');
     for (int i = 0; i < summaries.length; i++) {
       if (summaries[i].isNotEmpty) {
         result.writeln('- ${summaries[i]}');
       }
     }
 
-    result.writeln('\n\n\n[测试部分输出解析前全文内容]\n');
     result.writeln(allResult);
     String summariesResult = result.toString().replaceAll(RegExp(r'```'), "");
     listener(summariesResult, true);
     if (calcuateTokens(text: summariesResult) > 2100) {
       return content;
     }
-    return trySecondarySummary(summariesResult, modelPath);
+    return trySecondarySummary(
+        summariesResult
+            // 避免 AI 重复总结
+            .replaceAll(RegExp(r'## summary'), "")
+            .replaceAll(RegExp(r'## Summary'), ""),
+        modelPath);
   }
 
   /**
