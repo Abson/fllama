@@ -225,6 +225,10 @@ Summary requirements:
 2. Extract only the most essential, valuable information
 3. Ensure brevity and precision, avoid redundancy
 4. Remain objective and accurately reflect the original content
+
+
+# Content
+[$content]
             """)
       ],
       numGpuLayers: 99,
