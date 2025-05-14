@@ -71,7 +71,7 @@ class LocalLLMManager {
           maxTokens: maxTokens.round(),
           messages: [
             Message(Role.user, """
-Please summarize the following transcription content in 20-60 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
+Please summarize the following transcription content in 15-30 words that captures the core theme. Return ONLY the summary itself under the heading "## Summary" without any explanations, introductions, or additional text.
 
 Transcription content:
 [$chunk]
