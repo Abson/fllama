@@ -142,7 +142,7 @@ xxxxxx
       rethrow;
     }
     logge?.call("finish llm");
-
+    logge?.call('allResult $allResult');
     List<String> summaries =
         SummaryExtractor.extractSummaries(allResult); // 打印结果
     StringBuffer result = StringBuffer();
@@ -175,60 +175,60 @@ xxxxxx
     final request = OpenAiRequest(
       maxTokens: 2048,
       messages: [
-//         Message(Role.user, """
-// # Text Summary Prompt
-//
-// Please provide a comprehensive summary of the provided text, structured in the following format:
-//
-// ```
-// # Summary
-//
-// **Topic**: [Summarize the core subject of the text in 1-2 sentences]
-//
-// **Key Points**:
-// - [List first key point]
-// - [List second key point]
-// - [Continue listing all important key points, ensuring each is concise]
-// - [Focus on significant events, turning points, challenges, and achievements]
-//
-// **Conclusion**:
-// - [Provide 1-2 paragraphs of concluding thoughts on the overall content, emphasizing core lessons or insights]
-// ```
-//
-// When analyzing the text, please:
-// 1. Identify and distill the most important information
-// 2. Arrange key points in chronological order or by importance
-// 3. Reflect deeper meanings or lessons in the conclusion
-// 4. Remain objective and ensure the summary accurately represents the original content
-//
-// # Content
-// [$content]
-//             """)
         Message(Role.user, """
-Please provide a brief summary of the given text, using this streamlined format:
+# Text Summary Prompt
+
+Please provide a comprehensive summary of the provided text, structured in the following format:
 
 ```
 # Summary
 
-**Topic**: [Summarize the core subject in one sentence]
+**Topic**: [Summarize the core subject of the text in 1-2 sentences]
 
 **Key Points**:
-- [First key point, maximum 30 words]
-- [Second key point, maximum 30 words]
-- [List up to 5 most important points only]
+- [List first key point]
+- [List second key point]
+- [Continue listing all important key points, ensuring each is concise]
+- [Focus on significant events, turning points, challenges, and achievements]
 
-**Conclusion**: [Summarize the core insights in one brief paragraph (maximum 60 words)]
+**Conclusion**:
+- [Provide 1-2 paragraphs of concluding thoughts on the overall content, emphasizing core lessons or insights]
 ```
 
-Summary requirements:
-1. Extract only the most essential, valuable information
-2. Ensure brevity and precision, avoid redundancy
-3. Remain objective and accurately reflect the original content
-
+When analyzing the text, please:
+1. Identify and distill the most important information
+2. Arrange key points in chronological order or by importance
+3. Reflect deeper meanings or lessons in the conclusion
+4. Remain objective and ensure the summary accurately represents the original content
 
 # Content
 [$content]
             """)
+//         Message(Role.user, """
+// Please provide a brief summary of the given text, using this streamlined format:
+//
+// ```
+// # Summary
+//
+// **Topic**: [Summarize the core subject in one sentence]
+//
+// **Key Points**:
+// - [First key point, maximum 30 words]
+// - [Second key point, maximum 30 words]
+// - [List up to 5 most important points only]
+//
+// **Conclusion**: [Summarize the core insights in one brief paragraph (maximum 60 words)]
+// ```
+//
+// Summary requirements:
+// 1. Extract only the most essential, valuable information
+// 2. Ensure brevity and precision, avoid redundancy
+// 3. Remain objective and accurately reflect the original content
+//
+//
+// # Content
+// [$content]
+//             """)
       ],
       numGpuLayers: 99,
       /* this seems to have no adverse effects in environments w/o GPU support, ex. Android and web */
