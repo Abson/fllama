@@ -101,7 +101,6 @@ xxxxxx
               return;
             }
             // ignore: avoid_print
-            if (kDebugMode) debugPrint('[llama.cpp] $log');
             logge?.call('[llama.cpp] $log');
           },
         );
