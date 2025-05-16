@@ -79,7 +79,7 @@ Transcription content:
 This will give you just the requested format:
 
 ## Summary
-xxxxxx            
+xxxxxx
             """)
           ],
           numGpuLayers: 99,
@@ -101,21 +101,17 @@ xxxxxx
               return;
             }
             // ignore: avoid_print
-            logge?.call('[llama.cpp] $log');
+            print('[llama.cpp] $log');
           },
         );
 
         int requestId = await fllamaChat(
           request,
           (response, responseJson, done) {
-            if (kDebugMode) {
-              debugPrint(
-                  "[$runtimeType] done:$done response string length:${response.length}");
-            }
+            print(
+                "[$runtimeType] done:$done response string length:${response.length}");
             if (response.startsWith("Error:")) {
-              if (kDebugMode) {
-                debugPrint("[$runtimeType] LLM callback error $response");
-              }
+              print("[$runtimeType] LLM callback error $response");
               completer.completeError(LLMException(response, -1));
             }
             if (response.contains("<end_of_turn>")) {
@@ -249,23 +245,17 @@ When analyzing the text, please:
           return;
         }
         // ignore: avoid_print
-        if (kDebugMode) debugPrint('[llama.cpp] $log');
+        print('[llama.cpp] $log');
       },
     );
 
     int requestId = await fllamaChat(
       request,
       (response, responseJson, done) {
-        if (kDebugMode) {
-          debugPrint(
-              "[$runtimeType] done:$done response string length:${response.length}");
-        }
         print(
             "[$runtimeType] done:$done response string length:${response.length}");
         if (response.startsWith("Error:")) {
-          if (kDebugMode) {
-            debugPrint("[$runtimeType] LLM callback error $response");
-          }
+          print("[$runtimeType] LLM callback error $response");
           completer.completeError(LLMException(response, -1));
         }
         if (response.contains("<end_of_turn>")) {

@@ -19,7 +19,9 @@
 extern "C" {
 #endif
 
-typedef void (*fllama_inference_callback)(const char *response, const char * openai_response_json_string, uint8_t done);
+typedef void (*fllama_inference_callback)(
+    const char *response, const char *openai_response_json_string,
+    uint8_t done);
 typedef void (*fllama_log_callback)(const char *);
 
 struct fllama_inference_request {
@@ -44,20 +46,31 @@ struct fllama_inference_request {
       grammar; // Optional: BNF-like grammar to constrain sampling. Defaults to
                // "" (llama.cpp behavior). See
                // https://github.com/ggerganov/llama.cpp/blob/master/grammars/README.md
-  char *eos_token; // Optional: end of sequence token. Defaults to one in model file. (llama.cpp behavior)
-                   // For example, in ChatML / OpenAI, <|im_end|> means the message is complete.
-                   // Often times GGUF files were created incorrectly, and this should be overridden.
-                   // Using fllamaChat from Dart handles this automatically.
+  char *eos_token; // Optional: end of sequence token. Defaults to one in model
+                   // file. (llama.cpp behavior) For example, in ChatML /
+                   // OpenAI, <|im_end|> means the message is complete. Often
+                   // times GGUF files were created incorrectly, and this should
+                   // be overridden. Using fllamaChat from Dart handles this
+                   // automatically.
   fllama_log_callback
       dart_logger; // Optional: Dart caller logger. Defaults to NULL.
-  char * openai_request_json_string; // Optional: OpenAI JSON string. Defaults to NULL.
+  char *openai_request_json_string; // Optional: OpenAI JSON string. Defaults to
+                                    // NULL.
 };
 
-EMSCRIPTEN_KEEPALIVE FFI_PLUGIN_EXPORT void fllama_inference(struct fllama_inference_request request,
-                                        fllama_inference_callback callback);
-EMSCRIPTEN_KEEPALIVE FFI_PLUGIN_EXPORT void fllama_inference_sync(struct fllama_inference_request request,
-                           fllama_inference_callback callback);
-EMSCRIPTEN_KEEPALIVE FFI_PLUGIN_EXPORT void fllama_inference_cancel(int request_id);
+__attribute__((used, visibility("default")))
+EMSCRIPTEN_KEEPALIVE FFI_PLUGIN_EXPORT void
+fllama_inference(struct fllama_inference_request request,
+                 fllama_inference_callback callback);
+
+__attribute__((used, visibility("default")))
+EMSCRIPTEN_KEEPALIVE FFI_PLUGIN_EXPORT void
+fllama_inference_sync(struct fllama_inference_request request,
+                      fllama_inference_callback callback);
+
+__attribute__((used, visibility("default")))
+EMSCRIPTEN_KEEPALIVE FFI_PLUGIN_EXPORT void
+fllama_inference_cancel(int request_id);
 #ifdef __cplusplus
 }
 #endif
